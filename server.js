@@ -33,13 +33,9 @@ app.use(express.json()); // To enable jost parser
 
 // Initialize Database
 db.initialize(process.env.MONGODB_CONN_STRING).then(()=>{
-    app.listen(HTTP_PORT, ()=>{
+  /*  app.listen(HTTP_PORT, ()=>{
         console.log(`server listening on: ${HTTP_PORT}`);
-    });
-
-    
-
-
+    });*/
 }).catch((err)=>{
     console.log(err);
 });
@@ -53,6 +49,7 @@ app.get('/', (req, res) => {
 
 app.post('/api/sites', async (req, res) => {
     try {
+        await db.ensureInitialized(process.env.MONGODB_CONN_STRING);
         const newSite = await db.addNewSite(req.body);
         res.status(201).json(newSite);
     } catch (err) {
@@ -63,6 +60,7 @@ app.post('/api/sites', async (req, res) => {
 
 app.get('/api/sites', async (req, res) => {
     try {
+        await db.ensureInitialized(process.env.MONGODB_CONN_STRING);        
         const page = parseInt(req.query.page) || 1;
         const perPage = parseInt(req.query.perPage) || 10;
 
@@ -83,9 +81,9 @@ app.get('/api/sites', async (req, res) => {
 app.get('/api/sites/:id', async (req, res) => { 
     
     try {
-        console.log("I AM "); 
+        await db.ensureInitialized(process.env.MONGODB_CONN_STRING);
         const site = await db.getSiteById(req.params.id);
-        console.log("HErer"); 
+        
         if (!site) {
             return res.status(404).json({ message: 'Site not found' });
         }
@@ -98,6 +96,7 @@ app.get('/api/sites/:id', async (req, res) => {
 
 app.put('/api/sites/:id', async (req, res) => {
     try {
+        await db.ensureInitialized(process.env.MONGODB_CONN_STRING);
         const updatedSite = await db.updateSiteById(req.body,req.params.id);
 
         if (!updatedSite) {
@@ -113,6 +112,7 @@ app.put('/api/sites/:id', async (req, res) => {
 
 app.delete('/api/sites/:id', async (req, res) => {
     try {
+         await db.ensureInitialized(process.env.MONGODB_CONN_STRING);
         const success = await db.deleteSiteById(req.params.id);
         if (!success) {
             return res.status(404).json({ message: 'Site not found' });
@@ -130,4 +130,7 @@ app.use((req, res) => {
   res.status(404).send("Resource not found");
 });
 
+module.exports = app;
+
+// Below code is for call with our versel
 //app.listen(HTTP_PORT, () => { console.log(`server listening on: ${HTTP_PORT}`) });

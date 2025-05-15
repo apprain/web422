@@ -8,17 +8,26 @@ module.exports = class SitesDB {
   }
 
   // Pass the connection string to `initialize()`
-  initialize(connectionString) {
+  async initialize(connectionString) {
     return new Promise((resolve, reject) => {
       const db = mongoose.createConnection(connectionString);
+
       db.once('error', (err) => {
         reject(err);
       });
+      
       db.once('open', () => {
         this.Site = db.model("site", siteSchema);
         resolve();
       });
+
     });
+  }
+
+  async ensureInitialized(connectionString) {
+    if (!this.Site) {
+      await this.initialize(connectionString);
+    }
   }
 
   async addNewSite(data) {
