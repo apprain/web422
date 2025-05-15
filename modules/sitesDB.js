@@ -24,11 +24,11 @@ module.exports = class SitesDB {
     });
   }
 
-  async ensureInitialized(connectionString) {
+ /* async ensureInitialized(connectionString) {
     if (!this.Site) {
       await this.initialize(connectionString);
     }
-  }
+  }*/
 
   async addNewSite(data) {
     const newSite = new this.Site(data);
