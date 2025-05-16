@@ -27,7 +27,16 @@ app.use(cors()); // Allow all origins
 app.use(express.json()); // To enable jost parser
 
 app.get('/', (req, res) => {
-    res.json({"message": "API Listening", "term": "Summer 2025", "student": "178417234"})
+
+    res.send(
+        "Message: API Listening<br />Term: Summer 2025<br />Student: 178417234<br /><br />" +        
+        "[<a href=\"/api/sites\">View All sites</a>] " +
+         "[<a href=\"/api/sites/6825109d88581ff2d083069c\">View One</a>]"
+    );
+    
+    //
+    // 
+    // {"message": "API Listening", "term": "Summer 2025", "student": "178417234"})
 });
 
 
