@@ -30,8 +30,7 @@ app.get('/', (req, res) => {
 
     res.send(
         "Message: API Listening<br />Term: Summer 2025<br />Student: 178417234<br /><br />" +        
-        "[<a href=\"/api/sites\">View All sites</a>] " +
-         "[<a href=\"/api/sites/6825109d88581ff2d083069c\">View One</a>]"
+        "[<a href=\"/api/sites\">View All sites</a>] "
     );
     
     //
